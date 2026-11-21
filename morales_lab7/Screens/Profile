@@ -1,0 +1,130 @@
+import React from 'react';
+import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+
+export default function Profile({ route }) {
+  const { user } = route.params;
+
+  const address = `${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state}, ${user.location.country}`;
+
+  // One row: line icon in a light box + label + value
+  const Row = ({ icon, label, value }) => (
+    <View style={styles.row}>
+      <View style={styles.iconBox}>
+        <Feather name={icon} size={18} color="#3B2A96" />
+      </View>
+      <View style={styles.rowText}>
+        <Text style={styles.rowLabel}>{label}</Text>
+        <Text style={styles.rowValue}>{value}</Text>
+      </View>
+    </View>
+  );
+
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Purple container: starts at the picture, ends after the last detail */}
+      <View style={styles.purple}>
+        <Image source={{ uri: user.picture.large }} style={styles.image} />
+        <Text style={styles.name}>
+          {user.name.title} {user.name.first} {user.name.last}
+        </Text>
+        <Text style={styles.subtitle}>{user.location.country}</Text>
+
+        {/* White details card inside the purple */}
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>About</Text>
+          <Row icon="gift" label="Age" value={user.dob.age} />
+          <Row icon="calendar" label="Birthday" value={user.dob.date} />
+          <Row icon="user" label="Gender" value={user.gender} />
+          <Row icon="map-pin" label="Address" value={address} />
+
+          <Text style={styles.sectionTitle}>Contact</Text>
+          <Row icon="mail" label="Email" value={user.email} />
+          <Row icon="phone" label="Phone" value={user.phone} />
+
+          <Text style={styles.sectionTitle}>Other</Text>
+          <Row
+            icon="clock"
+            label="Date registered"
+            value={user.registered.date}
+          />
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  content: {
+    padding: 16,
+  },
+  purple: {
+    backgroundColor: '#3B2A96',
+    borderRadius: 28,
+    paddingTop: 30,
+    paddingHorizontal: 14,
+    paddingBottom: 14,
+    alignItems: 'center',
+  },
+  image: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    borderWidth: 3,
+    borderColor: '#fff',
+  },
+  name: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 12,
+  },
+  subtitle: {
+    color: '#D1C9F5',
+    fontSize: 13,
+    marginTop: 4,
+    marginBottom: 20,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 18,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#222',
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  iconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: '#ECE8FB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  rowText: {
+    flex: 1,
+  },
+  rowLabel: {
+    fontSize: 11,
+    color: '#888',
+  },
+  rowValue: {
+    fontSize: 14,
+    color: '#222',
+  },
+});

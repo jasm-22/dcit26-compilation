@@ -1,0 +1,41 @@
+import React from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+
+const products = [
+  { key: '1', title: 'Xbox', description: 'Lorem ipsum', rating: '4/5' },
+  { key: '2', title: 'PS5', description: 'Lorem ipsum', rating: '5/5' },
+  { key: '3', title: 'Nintendo Switch', description: 'Lorem ipsum', rating: '3/5' },
+];
+
+export default function Home({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item.key}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => navigation.navigate('Product', { product: item })}
+          >
+            <Text>{item.title}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F2F2F2',
+    padding: 16,
+  },
+  item: {
+    borderWidth: 1,
+    borderColor: '#999',
+    padding: 10,
+    marginBottom: 10,
+  },
+});
